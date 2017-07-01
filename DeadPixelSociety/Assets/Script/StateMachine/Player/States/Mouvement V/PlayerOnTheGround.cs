@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayerOnTheGround : PlayerState
 {
-    private double keyPressedTimer;
-    public double timeUntilMaxJumpPower;
 
     public override void OnEnter()
     {
-        keyPressedTimer = 0;
         player.RearmAnimation();
+        player.ResetJumpCounter();
+        player.AllowJump();
         //throw new NotImplementedException();
     }
 
@@ -21,23 +20,16 @@ public class PlayerOnTheGround : PlayerState
 
     public override void SFixedUpdate()
     {
-        if(keyPressedTimer >= timeUntilMaxJumpPower)
+        if (player.GetJumpCounter() == 0)
         {
-            player.JumpState();
-            player.Jump(1);
-            keyPressedTimer = 0;
+            if (Input.GetKeyDown("space"))
+            {
+                player.JumpState();
+                player.DisallowJump();
+            }
         }
-        else if (Input.GetKeyUp("space"))
-        {
-            player.JumpState();
-            player.Jump((float)(keyPressedTimer/timeUntilMaxJumpPower));
-            keyPressedTimer = 0;
-        }
-        else if(Input.GetKey("space"))
-        {
-            keyPressedTimer += Time.fixedDeltaTime;
-        }
-        else if(player.GetBody().velocity.y < -1.0f)
+
+        if (player.GetBody().velocity.y < -1.0f)
         {
             player.FallingState();
         }

@@ -8,6 +8,7 @@ public class PlayerWalk : PlayerState
 
     public override void OnEnter()
     {
+        StartAnimation();
         //throw new NotImplementedException();
     }
 

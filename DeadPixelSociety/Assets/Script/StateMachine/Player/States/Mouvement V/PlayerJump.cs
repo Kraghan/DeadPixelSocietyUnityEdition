@@ -7,6 +7,7 @@ public class PlayerJump : PlayerState
 {
     public override void OnEnter()
     {
+        player.Jump();
         StartAnimation();
         //throw new NotImplementedException();
     }
@@ -18,13 +19,17 @@ public class PlayerJump : PlayerState
 
     public override void SFixedUpdate()
     {
+        if (!player.CanJump() && Input.GetKeyUp("space"))
+            player.AllowJump();
+
         if (player.IsOnTheGround())
         {
             player.OnTheGroundState();
         }
-        else if (Input.GetKeyDown("space"))
+        else if (player.CanJump() && Input.GetKeyDown("space"))
         {
             player.DoubleJumpState();
+            player.DisallowJump();
         }
         else if(player.GetBody().velocity.y < 0.0f)
         {

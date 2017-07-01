@@ -6,7 +6,8 @@ public class PlayerDoubleJump : PlayerState
 {
     public override void OnEnter()
     {
-        player.Jump(1);
+        StartAnimation();
+        player.Jump();
         //throw new NotImplementedException();
     }
 
@@ -37,5 +38,11 @@ public class PlayerDoubleJump : PlayerState
     public override void SUpdate()
     {
         //throw new NotImplementedException();
+    }
+
+    public override void StartAnimation()
+    {
+        if (player.IsAnimated())
+            player.GetAnimator().Play("flip");
     }
 }

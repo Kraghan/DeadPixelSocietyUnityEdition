@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class PlayerFalling : PlayerState
 {
-    private double keyPressedTimer;
-    public double timeUntilMaxJumpPower;
-
     public override void OnEnter()
     {
-        keyPressedTimer = 0;
         StartAnimation();
         //throw new NotImplementedException();
     }
@@ -21,13 +17,19 @@ public class PlayerFalling : PlayerState
 
     public override void SFixedUpdate()
     {
+        if(Input.GetKeyUp("space"))
+        {
+            player.AllowJump();
+        }
+
         if (player.IsOnTheGround())
         {
             player.OnTheGroundState();
         }
 
-        if (Input.GetKeyDown("space"))
+        if (player.CanJump() && Input.GetKeyDown("space"))
         {
+            player.DisallowJump();
             if (player.GetJumpCounter() == 0)
                 player.JumpState();
             else if (player.GetJumpCounter() == 1)
@@ -37,7 +39,6 @@ public class PlayerFalling : PlayerState
 
     public override void SStart()
     {
-        keyPressedTimer = 0;
         //throw new NotImplementedException();
     }
 
